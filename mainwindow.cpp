@@ -6,7 +6,9 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    heroBrowser(db, this),
+    createHero(db, this)
 {
     ui->setupUi(this);
 
@@ -20,21 +22,10 @@ MainWindow::MainWindow(QWidget *parent) :
     else
     {
         qDebug() << "OK";
-
-        QSqlQuery query;
-
-        query.prepare("SELECT * FROM races");
-
-        if (query.exec())
-        {
-            while (query.next())
-            {
-                ui->listWidget->insertItem(ui->listWidget->count(), new QListWidgetItem(query.value(2).toString()));
-            }
-        }
     }
 
-    ui->herolist->hide();
+    openMainMenu();
+    createHero.init();
 }
 
 MainWindow::~MainWindow()
@@ -42,8 +33,45 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::openMainMenu()
 {
-    ui->herolist->show();
-    ui->menu->hide();
+    hideAll();
+    ui->mainMenu->show();
+}
+
+void MainWindow::openHeroBrowser()
+{
+    hideAll();
+    heroBrowser.refresh();
+    heroBrowser.show();
+}
+
+void MainWindow::openCreateHero()
+{
+    hideAll();
+    createHero.show();
+}
+
+void MainWindow::hideAll()
+{
+    ui->mainMenu->hide();
+    heroBrowser.hide();
+    createHero.hide();
+}
+
+void MainWindow::on_browseButton_clicked()
+{
+    openHeroBrowser();
+}
+
+void MainWindow::on_exitButton_clicked()
+{
+    close();
+}
+
+void MainWindow::on_newButton_clicked()
+{
+    openCreateHero();
+    createHero.hero.update = false;
+    createHero.changeTab(0);
 }

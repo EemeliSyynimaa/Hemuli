@@ -13,8 +13,18 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    herobrowser.cpp \
+    createhero.cpp \
+    hero.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    herobrowser.h \
+    createhero.h \
+    hero.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    herobrowser.ui \
+    createhero.ui
+
+DISTFILES +=
